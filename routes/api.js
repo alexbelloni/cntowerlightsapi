@@ -4,8 +4,6 @@ const scrapeIt = require("scrape-it")
 const getSchedule = require('../src/schedule');
 
 router.get('/', (req, res) =>{
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
     res.send('Tower Lights API\n');
 });
 

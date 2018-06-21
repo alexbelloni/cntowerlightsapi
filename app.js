@@ -1,16 +1,15 @@
-const hostname = process.env.hostname || 'http://127.0.0.1';
-const port = process.env.port || 3000;
-
 const express = require('express');
-const routes = require('./routes/api');
 const app = express();
+app.set('port', (process.env.PORT || 5000))
+app.use(express.static(__dirname + '/public'))
+
+const routes = require('./routes/api');
+
 app.use(routes);
 
-app.listen(port, () => {
-    const myPort = port ? ":"+port : '';
-    console.log('port: ', port);
-    console.log(`Server via express running at ${hostname}${myPort}/`);
-  });
+app.listen(app.get('port'), function() {
+  console.log("Node app is running at localhost:" + app.get('port'))
+});
 
 /*
 const http = require('http');
