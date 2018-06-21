@@ -1,4 +1,4 @@
-const hostname = process.env.hostname || '127.0.0.1';
+const hostname = process.env.hostname || 'http://127.0.0.1';
 const port = process.env.port || 3000;
 
 const express = require('express');
@@ -7,7 +7,9 @@ const app = express();
 app.use(routes);
 
 app.listen(port, () => {
-    console.log(`Server via express running at http://${hostname}:${port}/`);
+    const myPort = port ? ":"+port : '';
+    console.log('port: ', port);
+    console.log(`Server via express running at ${hostname}${myPort}/`);
   });
 
 /*
