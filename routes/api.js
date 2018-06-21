@@ -6,7 +6,7 @@ const getSchedule = require('../src/schedule');
 router.get('/', (req, res) =>{
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
-    res.end('Tower Lights API\n');
+    res.send('Tower Lights API\n');
 });
 
 router.get('/schedule', (req, res) =>{
