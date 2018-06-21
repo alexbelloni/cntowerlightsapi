@@ -1,5 +1,5 @@
-const hostname = '127.0.0.1';
-const port = 3000;
+const hostname = process.env.hostname || '127.0.0.1';
+const port = process.env.port || 3000;
 
 const express = require('express');
 const routes = require('./routes/api');
