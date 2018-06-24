@@ -30,7 +30,7 @@ function getSchedule(linesArray) {
         const newNode = index === 5 || ((index + 1) % 3) === 0;
         if (newNode) {
             const day = currentNode[0].replace(month, '').trim();
-            dates.push({ day: day, occasion: currentNode[1], colour: currentNode[2] });
+            dates.push({ day: parseInt(day), occasion: currentNode[1], colour: currentNode[2] });
 
             currentNode = [];
         }
