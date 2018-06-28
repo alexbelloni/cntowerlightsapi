@@ -2,7 +2,7 @@ const Schedule = require('./Schedule');
 
 const completeJson =  
 { lines:
-    [ 'Date',
+       [ 'Date',
       'Occasion* (Subject to Change)',
       'Colour',
       'June 1',
@@ -60,7 +60,7 @@ const completeJson =
       'United Nations World Refugee Day',
       'Blue',
       'June 21',
-      'National Aboriginal Day',
+      'National Indigenous Peoples Day',
       'Yellow, dark blue, dark red and white',
       'June 23',
       'National Day of Remembrance for Victims of Terrorism',
@@ -85,7 +85,7 @@ const completeJson =
       'Blue',
       'CN Tower',
       'Canada Lands Company Société Immobilière du Canada',
-      'Canada' ] };
+      'Canada' ]};
 
 test('Empty schedule', () => {
     const schedule = new Schedule;

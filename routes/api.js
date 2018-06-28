@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const scrapeIt = require("scrape-it")
-const getSchedule = require('../src/schedule');
 const Schedule = require('../src/entities/Schedule');
 
 router.get('/', (req, res) => {
@@ -18,9 +17,17 @@ router.get('/schedule', (req, res) => {
             listItem: "td"
         }
     }, (err, { data }) => {
-        const schedule = new Schedule;
-
-        res.send(schedule.getSchedule(data.lines));
+        if (data) {
+            const schedule = new Schedule;
+            try {
+                const sch = schedule.getTowerSchedule(data.lines)
+                res.send(sch);
+            } catch (e) {
+                res.send(e);
+            }
+        } else {
+            res.send({});
+        }
     })
 });
 

@@ -37,7 +37,6 @@ const Schedule = function () {
             return [];
         }
 
-        console.log(linesArray[3]);
         let month = _getMonth(linesArray[3]);
         if (!month) {
             return [];
