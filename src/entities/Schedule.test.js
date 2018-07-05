@@ -5,6 +5,8 @@ const completeJson =
        [ 'Date',
       'Occasion* (Subject to Change)',
       'Colour',
+      'May 29',	'National Scleroderma Awareness Month',	'White and royal blue',
+      'May 30',	'Arthrogryposis Multiplex Congenital Awareness',	'Blue',      
       'June 1',
       'ALS Awareness Month',
       'Purple',

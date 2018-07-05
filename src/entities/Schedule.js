@@ -37,15 +37,15 @@ const Schedule = function () {
             return [];
         }
 
-        let month = _getMonth(linesArray[3]);
-        if (!month) {
-            return [];
-        }
-
         const maxIndex = length - 3;
         let lines = linesArray.filter((value, index) => {
             return index > 2 && index < maxIndex;
         }, maxIndex);
+
+        let month = _getMonth(lines[lines.length - 3]);
+        if (!month) {
+            return [];
+        }
 
         let dates = [];
 
@@ -54,16 +54,17 @@ const Schedule = function () {
             currentNode.push(element);
             const newNode = index === 5 || ((index + 1) % 3) === 0;
             if (newNode) {
-                const day = currentNode[0].replace(month, '').trim();
-                const config = _getConfig(currentNode);
+                if (currentNode[0].indexOf(month) > -1) {
+                    const day = currentNode[0].replace(month, '').trim();
+                    const config = _getConfig(currentNode);
 
-                const lastDate = dates[dates.length - 1];
-                if (lastDate && lastDate.day === parseInt(day)) {
-                    lastDate.configs.push(config);
-                } else {
-                    dates.push({ day: parseInt(day), configs: [config] });
+                    const lastDate = dates[dates.length - 1];
+                    if (lastDate && lastDate.day === parseInt(day)) {
+                        lastDate.configs.push(config);
+                    } else {
+                        dates.push({ day: parseInt(day), configs: [config] });
+                    }
                 }
-
                 currentNode = [];
             }
         });
