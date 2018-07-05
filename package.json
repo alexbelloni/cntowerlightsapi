@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "cors": "^2.8.4",
     "express": "^4.16.3",
     "scrape-it": "^5.0.5"
   },
@@ -11,7 +12,7 @@
     "jest": "^23.2.0"
   },
   "scripts": {
-    "test": "jest", 
+    "test": "jest",
     "start": "node app.js"
   },
   "author": "alexandre belloni",
