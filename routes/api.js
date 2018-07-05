@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
 
 router.get('/schedule', (req, res) => {
     res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
+    res.setHeader('Content-Type', 'application/json');
 
     // Promise interface
     scrapeIt("http://www.cntower.ca/en-ca/about-us/night-lighting.html", {
@@ -26,7 +26,7 @@ router.get('/schedule', (req, res) => {
                 res.send(e);
             }
         } else {
-            res.send({});
+            res.send(err);
         }
     })
 });
