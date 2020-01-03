@@ -9,7 +9,7 @@
     "scrape-it": "^5.0.5"
   },
   "devDependencies": {
-    "jest": "^23.2.0"
+    "jest": "^25.0.0"
   },
   "scripts": {
     "test": "jest",
