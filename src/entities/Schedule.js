@@ -1,10 +1,22 @@
 const Schedule = function () {
+    /**
+     * @param {string} element 
+     * Complete date e.g. June 3
+     * @returns {string} 
+     * Just the month
+     */
     function _getMonth(element) {
-        return element.substr(0, element.indexOf(' '));
+        return element && element.substr(0, element.indexOf(' '));
     }
 
-    function _getColours(coloursString) {
-        const str = coloursString.trim().replace(' and ', ' ').replace(new RegExp(',', 'g'), ' ').toLowerCase();
+    /**
+     * @param {string} colours
+     * Simple or multiple names e.g. "Blue and Red" or "Yellow Purple"
+     * @returns {string|Array}
+     * Colour names
+     */
+    function _getColours(colours) {
+        const str = colours.trim().replace(' and ', ' ').replace(new RegExp(',', 'g'), ' ').toLowerCase();
         const arr = str.split(" ");
         const arrCopy = [];
         arr.forEach((element) => {
@@ -16,33 +28,46 @@ const Schedule = function () {
         return arrCopy;
     }
 
+    /**
+     * @param {string|Array} currentNode 
+     * 3 elements from a table line e.g. 'June 3', 'ALS Awareness Month', 'Purple Yellow and Green'
+     * @returns {object}
+     * { occasions, colourCaption, colours }
+     */
     function _getConfig(currentNode) {
         const colourCaption = currentNode[2];
         const colours = _getColours(colourCaption) || [];
-        const occasion = currentNode[1];
-        return { occasions: occasion, colourCaption: colourCaption, colours: colours };
+        const occasions = currentNode[1];
+        return { occasions, colourCaption, colours };
+    }
+    
+
+    const NUMBER_OF_COLUMNS = 3
+
+    /**
+     * @param {string|Array} arr 
+     * Each columns of the table 
+     * @returns {string|Array}
+     * Valid columns
+     */
+    function _getValidLines(arr) {
+        return arr && arr.slice(NUMBER_OF_COLUMNS, arr.length - NUMBER_OF_COLUMNS)
     }
 
-    /*{"day":1,"configs":[
-        {"occasions":"ALS Awareness Month","colourCaption":"Purple","colours":["purple"]},
-        {"occasions":"Unplug to Connect - Boys and Girls Clubs of Canada","colourCaption":"Green","colours":["green"]}]}
-    */
+    /**
+     * @param {string|Array} linesArray 
+     * Each columns of the table
+     * @returns {object}
+     * {"month":"January","dates":[{"day":25,"configs":[{"occasions":"Chinese New Year - Year of the Rat","colourCaption":"Red","colours":["red"]}]}]}
+     */
     function _getTowerSchedule(linesArray) {
-        if (!linesArray) {
+        const items = _getValidLines(linesArray)
+
+        if (!items || items.length < NUMBER_OF_COLUMNS) {
             return [];
         }
 
-        const length = linesArray.length;
-        if (length < 9) {
-            return [];
-        }
-
-        const maxIndex = length - 3;
-        let lines = linesArray.filter((value, index) => {
-            return index > 2 && index < maxIndex;
-        }, maxIndex);
-
-        let month = _getMonth(lines[lines.length - 3]);
+        let month = _getMonth(items[items.length - NUMBER_OF_COLUMNS]);
         if (!month) {
             return [];
         }
@@ -50,9 +75,9 @@ const Schedule = function () {
         let dates = [];
 
         let currentNode = [];
-        lines.forEach((element, index) => {
+        items.forEach((element, index) => {
             currentNode.push(element);
-            const newNode = index === 5 || ((index + 1) % 3) === 0;
+            const newNode = ((index + 1) % NUMBER_OF_COLUMNS) === 0;
             if (newNode) {
                 if (currentNode[0].indexOf(month) > -1) {
                     const day = currentNode[0].replace(month, '').trim();
@@ -69,8 +94,7 @@ const Schedule = function () {
             }
         });
 
-        const ret = { month: month, dates: dates };
-        //console.log(JSON.stringify(ret));
+        const ret = { month, dates };
         return ret;
     }
 

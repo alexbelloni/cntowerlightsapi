@@ -4,11 +4,11 @@ const scrapeIt = require("scrape-it")
 const Schedule = require('../src/entities/Schedule');
 
 router.get('/', (req, res) => {
-    res.send('Tower Lights API\n');
+    res.send('CNTower Lights API\n');
 });
 
 router.get('/schedule', (req, res) => {
-    res.statusCode = 200;
+    
     res.setHeader('Content-Type', 'application/json');
 
     // Promise interface
@@ -18,14 +18,16 @@ router.get('/schedule', (req, res) => {
         }
     }, (err, { data }) => {
         if (data) {
-            const schedule = new Schedule;
             try {
-                const sch = schedule.getTowerSchedule(data.lines)
+                const sch = (new Schedule).getTowerSchedule(data.lines)
+                res.statusCode = 200;
                 res.send(sch);
             } catch (e) {
+                res.statusCode = 500;
                 res.send(e);
-            }
+            }   
         } else {
+            res.statusCode = 500;
             res.send(err);
         }
     })
