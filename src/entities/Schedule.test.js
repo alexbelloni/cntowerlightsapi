@@ -191,5 +191,26 @@ test('Multiple colours', () => {
     expect(sch.dates[1].configs[0].colours.length).toEqual(0);
 }); 
 
+test('Long colour description', () => {
+    const json =
+    {
+        lines:
+            [
+                'Date',
+                'Occasion* (Subject to Change)',
+                'Colour',
+                'June 3',
+                'ALS Awareness Month',
+                'Lighting on this night will feature a Canada flag image and red & white red green purple blue teal yellow gold white orange royal pink black magenta',           
+                'CN Tower',
+                'Canada Lands Company Société Immobilière du Canada',
+                'Canada']
+    };
+    const sch = schedule.getTowerSchedule(json.lines);
+    expect(sch.dates[0].configs[0].colours.length).toEqual(11);
+}); 
+
+
+
   
 

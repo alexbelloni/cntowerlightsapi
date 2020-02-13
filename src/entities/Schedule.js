@@ -1,3 +1,4 @@
+const colorsJson = require('./colors.json')
 const Schedule = function () {
     /**
      * @param {string} element 
@@ -7,6 +8,17 @@ const Schedule = function () {
      */
     function _getMonth(element) {
         return element && element.substr(0, element.indexOf(' '));
+    }
+
+    const colorKeys = Object.keys(colorsJson);
+
+    function _isColorName(colorname){
+        for(let i=0; i<colorKeys.length; ++i){
+            if(colorsJson[colorKeys[i]].toLowerCase() === colorname.toLowerCase()){
+                return true
+            }
+        }
+        return false
     }
 
     /**
@@ -21,11 +33,11 @@ const Schedule = function () {
         const arrCopy = [];
         arr.forEach((element) => {
             const e = element.trim();
-            if (e && arrCopy.indexOf(e) === -1) {
+            if (e && arrCopy.indexOf(e) === -1 && _isColorName(e.trim())) {
                 arrCopy.push(e.trim());
             }
         });
-        return arrCopy;
+        return arrCopy
     }
 
     /**
