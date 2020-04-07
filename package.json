@@ -9,12 +9,17 @@
     "scrape-it": "^5.0.5"
   },
   "devDependencies": {
-    "jest": "^25.0.0"
+    "jest": "^25.2.7",
+    "minimist": "^1.2.5"
   },
   "scripts": {
     "test": "jest",
-    "start": "node app.js"
+    "start": "node app.js",
+    "preinstall": "npx npm-force-resolutions"
   },
   "author": "alexandre belloni",
-  "license": "ISC"
+  "license": "ISC",
+  "resolutions": {
+    "minimist": "^1.2.5"
+  }
 }
