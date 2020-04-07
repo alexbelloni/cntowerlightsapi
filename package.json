@@ -15,7 +15,7 @@
   "scripts": {
     "test": "jest",
     "start": "node app.js",
-    "preinstall": "npx npm-force-resolutions"
+    "preinstall-": "npx npm-force-resolutions"
   },
   "author": "alexandre belloni",
   "license": "ISC",
