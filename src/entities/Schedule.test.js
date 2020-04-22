@@ -210,6 +210,25 @@ test('Long colour description', () => {
     expect(sch.dates[0].configs[0].colours.length).toEqual(11);
 }); 
 
+test('colours is a object', () => {
+    const json =
+    {
+        lines:
+            [
+                'Date',
+                'Occasion* (Subject to Change)',
+                'Colour',
+                'June 3',
+                'ALS Awareness Month',
+                { ___raw: '' },           
+                'CN Tower',
+                'Canada Lands Company Société Immobilière du Canada',
+                'Canada']
+    };
+    const sch = schedule.getTowerSchedule(json.lines);
+    expect(sch.dates[0].configs[0].colours.length).toEqual(0);
+}); 
+
 
 
   

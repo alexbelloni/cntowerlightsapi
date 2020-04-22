@@ -12,9 +12,9 @@ const Schedule = function () {
 
     const colorKeys = Object.keys(colorsJson);
 
-    function _isColorName(colorname){
-        for(let i=0; i<colorKeys.length; ++i){
-            if(colorsJson[colorKeys[i]].toLowerCase() === colorname.toLowerCase()){
+    function _isColorName(colorname) {
+        for (let i = 0; i < colorKeys.length; ++i) {
+            if (colorsJson[colorKeys[i]].toLowerCase() === colorname.toLowerCase()) {
                 return true
             }
         }
@@ -28,16 +28,21 @@ const Schedule = function () {
      * Colour names
      */
     function _getColours(colours) {
-        const str = colours.trim().replace(' and ', ' ').replace(new RegExp(',', 'g'), ' ').toLowerCase();
-        const arr = str.split(" ");
-        const arrCopy = [];
-        arr.forEach((element) => {
-            const e = element.trim();
-            if (e && arrCopy.indexOf(e) === -1 && _isColorName(e.trim())) {
-                arrCopy.push(e.trim());
-            }
-        });
-        return arrCopy
+        try {
+            const str = colours.trim().replace(' and ', ' ').replace(new RegExp(',', 'g'), ' ').toLowerCase();
+            console.log('str', str);
+            const arr = str.split(" ");
+            const arrCopy = [];
+            arr.forEach((element) => {
+                const e = element.trim();
+                if (e && arrCopy.indexOf(e) === -1 && _isColorName(e.trim())) {
+                    arrCopy.push(e.trim());
+                }
+            });
+            return arrCopy
+        } catch{
+            return []
+        }
     }
 
     /**
@@ -52,7 +57,6 @@ const Schedule = function () {
         const occasions = currentNode[1];
         return { occasions, colourCaption, colours };
     }
-    
 
     const NUMBER_OF_COLUMNS = 3
 
@@ -73,7 +77,7 @@ const Schedule = function () {
      * {"month":"January","dates":[{"day":25,"configs":[{"occasions":"Chinese New Year - Year of the Rat","colourCaption":"Red","colours":["red"]}]}]}
      */
     function _getTowerSchedule(linesArray) {
-        const items = _getValidLines(linesArray)
+        const items = _getValidLines(linesArray);
 
         if (!items || items.length < NUMBER_OF_COLUMNS) {
             return [];
@@ -85,9 +89,9 @@ const Schedule = function () {
         }
 
         let dates = [];
-
         let currentNode = [];
         items.forEach((element, index) => {
+            console.log(element, index)
             currentNode.push(element);
             const newNode = ((index + 1) % NUMBER_OF_COLUMNS) === 0;
             if (newNode) {
@@ -107,6 +111,7 @@ const Schedule = function () {
         });
 
         const ret = { month, dates };
+
         return ret;
     }
 
