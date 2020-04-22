@@ -30,7 +30,6 @@ const Schedule = function () {
     function _getColours(colours) {
         try {
             const str = colours.trim().replace(' and ', ' ').replace(new RegExp(',', 'g'), ' ').toLowerCase();
-            console.log('str', str);
             const arr = str.split(" ");
             const arrCopy = [];
             arr.forEach((element) => {

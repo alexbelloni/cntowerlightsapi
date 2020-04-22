@@ -10,6 +10,11 @@ npm install express --save
 npm install scrape-it  
 npm install --save-dev jest  
   
-Deployed manually into Heroku  
-[Get the current schedule from the API](https://tower-lights.herokuapp.com/schedule)
+Tested using:
+
+Jest  
+  
+
+Deployed manually into Heroku using the Deploy button on that page.   
+[schedule response](https://tower-lights.herokuapp.com/schedule)
 

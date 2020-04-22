@@ -210,7 +210,7 @@ test('Long colour description', () => {
     expect(sch.dates[0].configs[0].colours.length).toEqual(11);
 }); 
 
-test('colours is a object', () => {
+test('colours is an object', () => {
     const json =
     {
         lines:
