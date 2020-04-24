@@ -143,7 +143,7 @@ test('One day with two configs', () => {
     };
     const sch = schedule.getTowerSchedule(json.lines);
     expect(sch.dates[0].configs.length).toEqual(2);
-});   
+});
 
 test('Schedule without a valid date', () => {
     const json =
@@ -165,7 +165,7 @@ test('Schedule without a valid date', () => {
     };
     const sch = schedule.getTowerSchedule(json.lines);
     expect(sch.length).toBe(0);
-}); 
+});
 
 test('Multiple colours', () => {
     const json =
@@ -177,10 +177,10 @@ test('Multiple colours', () => {
                 'Colour',
                 'June 3',
                 'ALS Awareness Month',
-                'Purple Yellow and Green',    
+                'Purple Yellow and Green',
                 'June 8',
                 'ALS Awareness Month',
-                '',             
+                '',
                 'CN Tower',
                 'Canada Lands Company Société Immobilière du Canada',
                 'Canada']
@@ -189,7 +189,7 @@ test('Multiple colours', () => {
     //console.log(sch.dates[0].configs[0].colours)
     expect(sch.dates[0].configs[0].colours.length).toEqual(3);
     expect(sch.dates[1].configs[0].colours.length).toEqual(0);
-}); 
+});
 
 test('Long colour description', () => {
     const json =
@@ -201,14 +201,14 @@ test('Long colour description', () => {
                 'Colour',
                 'June 3',
                 'ALS Awareness Month',
-                'Lighting on this night will feature a Canada flag image and red & white red green purple blue teal yellow gold white orange royal pink black magenta',           
+                'Lighting on this night will feature a Canada flag image and red & white red green purple blue teal yellow gold white orange royal pink black magenta',
                 'CN Tower',
                 'Canada Lands Company Société Immobilière du Canada',
                 'Canada']
     };
     const sch = schedule.getTowerSchedule(json.lines);
     expect(sch.dates[0].configs[0].colours.length).toEqual(11);
-}); 
+});
 
 test('colours is an object', () => {
     const json =
@@ -220,16 +220,32 @@ test('colours is an object', () => {
                 'Colour',
                 'June 3',
                 'ALS Awareness Month',
-                { ___raw: '' },           
+                { ___raw: '' },
                 'CN Tower',
                 'Canada Lands Company Société Immobilière du Canada',
                 'Canada']
     };
     const sch = schedule.getTowerSchedule(json.lines);
     expect(sch.dates[0].configs[0].colours.length).toEqual(0);
-}); 
+});
 
+test('colours is an object and extract colors from the occasion descrption', () => {
+    const json =
+    {
+        lines:
+            [
+                'Date',
+                'Occasion* (Subject to Change)',
+                'Colour',
+                'June 3',
+                "The CN Tower will be joining in tonight’s national vigil, lighting blue and white in memory of those who lost their lives in the shooting in Nova Scotia.  On the quarter-hour and half-hour, the CN Tower will be lit red, blue and gold to honour Royal Canadian Mounted Police (RCMP) Cst. Heidi Stevenson who was killed in the line of duty.",
+                { ___raw: '' },
+                'CN Tower',
+                'Canada Lands Company Société Immobilière du Canada',
+                'Canada']
+    };
+    const sch = schedule.getTowerSchedule(json.lines);
+    expect(sch.dates[0].configs[0].colours.length > 2).toEqual(true);
+});
 
-
-  
 

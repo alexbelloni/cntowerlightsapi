@@ -51,8 +51,12 @@ const Schedule = function () {
      * { occasions, colourCaption, colours }
      */
     function _getConfig(currentNode) {
-        const colourCaption = currentNode[2];
-        const colours = _getColours(colourCaption) || [];
+        let colourCaption = typeof currentNode[2] === "string" ? currentNode[2] : "";
+        let colours = _getColours(colourCaption)
+        if(colours.length === 0) colours = _getColours(currentNode[1]);
+        if(!colourCaption){
+            colourCaption = colours.join(', ');
+        }
         const occasions = currentNode[1];
         return { occasions, colourCaption, colours };
     }
@@ -77,7 +81,6 @@ const Schedule = function () {
      */
     function _getTowerSchedule(linesArray) {
         const items = _getValidLines(linesArray);
-
         if (!items || items.length < NUMBER_OF_COLUMNS) {
             return [];
         }
@@ -90,7 +93,6 @@ const Schedule = function () {
         let dates = [];
         let currentNode = [];
         items.forEach((element, index) => {
-            console.log(element, index)
             currentNode.push(element);
             const newNode = ((index + 1) % NUMBER_OF_COLUMNS) === 0;
             if (newNode) {
