@@ -117,6 +117,7 @@ const completeJson =
 
 test('Schedule has 21 days', () => {
     const sch = schedule.getTowerSchedule(completeJson.lines);
+    console.log(sch)
     expect(sch.dates.length).toEqual(21);
 });
 
@@ -248,4 +249,33 @@ test('colours is an object and extract colors from the occasion descrption', () 
     expect(sch.dates[0].configs[0].colours.length > 2).toEqual(true);
 });
 
-
+test('getTowerScheduleComplete returns array with months and dates', () => {
+    const json =
+    {
+        lines:
+            [
+                'Date',
+                'Occasion* (Subject to Change)',
+                'Colour',
+                'June 29',
+                'ALS Awareness Month',
+                'red',
+                'June 30',
+                'ALS 30 Awareness Month',
+                'blue',
+                'July 1',
+                'ALS 1 Awareness Month',
+                'green',
+                'July 2',
+                'ALS 2 Awareness Month',
+                'purple',
+                'CN Tower',
+                'Canada Lands Company Société Immobilière du Canada',
+                'Canada']
+    };
+    let sch = schedule.getTowerScheduleComplete(json.lines);
+    expect(sch.length === 2).toEqual(true);
+    sch = schedule.getTowerScheduleComplete(json.lines.slice(9));
+    expect(sch.length === 1).toEqual(true);
+    
+});

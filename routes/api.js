@@ -7,8 +7,7 @@ router.get('/', (req, res) => {
     res.send('CNTower Lights API\n');
 });
 
-router.get('/schedule', (req, res) => {
-    
+function sendTowerSchedule(res, apiMethodName){
     res.setHeader('Content-Type', 'application/json');
 
     // Promise interface
@@ -19,7 +18,7 @@ router.get('/schedule', (req, res) => {
     }, (err, { data }) => {
         if (data) {
             try {
-                const sch = (new Schedule).getTowerSchedule(data.lines)
+                const sch = (new Schedule)[apiMethodName](data.lines)
                 res.statusCode = 200;
                 res.send(sch);
             } catch (e) {
@@ -31,6 +30,14 @@ router.get('/schedule', (req, res) => {
             res.send(err);
         }
     })
+}
+
+router.get('/schedule', (req, res) => {    
+    sendTowerSchedule(res, "getTowerSchedule");
+});
+
+router.get('/scheduleComplete', (req, res) => {    
+    sendTowerSchedule(res, "getTowerScheduleComplete");
 });
 
 module.exports = router;
