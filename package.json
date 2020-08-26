@@ -10,11 +10,13 @@
   },
   "devDependencies": {
     "jest": "^25.2.7",
-    "minimist": "^1.2.5"
+    "minimist": "^1.2.5",
+    "nodemon": "^2.0.4"
   },
   "scripts": {
     "test": "jest",
     "start": "node app.js",
+    "dev": "nodemon app.js",
     "preinstall-": "npx npm-force-resolutions"
   },
   "author": "alexandre belloni",
