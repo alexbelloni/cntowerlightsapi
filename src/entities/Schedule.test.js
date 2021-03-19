@@ -277,3 +277,32 @@ test('getTowerScheduleComplete returns array with months and dates', () => {
     expect(sch[1].dates.length === 1).toEqual(true);
     
 });
+
+test('getLightColours returns array with months and dates', () => {
+    const json =
+    {
+        lines:
+            [
+                'Date',
+                'Occasion* (Subject to Change)',
+                'Colour',
+                'June 29',
+                'ALS Awareness Month',
+                'red',
+                'June 30',
+                'ALS 30 Awareness Month',
+                'Blue',
+                'July 1',
+                'ALS 1 Awareness Month',
+                'green and white',
+                'July 1',
+                'ALS 2 Awareness Month',
+                'blue',
+                'CN Tower',
+                'Canada Lands Company Société Immobilière du Canada',
+                'Canada']
+    };
+    let colours = schedule.getLightColours(json.lines);console.log(colours)
+    expect(colours.length).toBe(4);
+    
+});
