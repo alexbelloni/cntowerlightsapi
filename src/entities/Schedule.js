@@ -61,6 +61,8 @@ const Schedule = function () {
         return { occasions, colourCaption, colours };
     }
 
+    // based on the spreadsheet of the CNTower agenda
+    // actual: 'Date', 'Occasion* (Subject to Change)', and 'Colour'
     const NUMBER_OF_COLUMNS = 3
 
     /**
@@ -73,6 +75,27 @@ const Schedule = function () {
         return arr && arr.slice(NUMBER_OF_COLUMNS, arr.length - NUMBER_OF_COLUMNS)
     }
 
+    /**
+     * 
+     * @param {string} month 
+     * e.g. March, April
+     * @param {array} items 
+     * valid array of the cntower's spreadsheet
+     * @returns 
+    { 
+        month: 'June',
+        dates:
+            [ { day: 1, configs: [ 
+                { occasions: 'ALS Awareness Month',
+                    colourCaption: 'Purple',
+                    colours: [ 'purple' ] },
+                { occasions: 'Unplug to Connect - Boys and Girls Clubs of Canada',
+                    colourCaption: 'Green',
+                    colours: [ 'green' ] } ] },
+              { day: 2, configs: [Array] }
+            ]
+    }
+     */
     function _getMonthObject(month, items) {
         let dates = [];
         let currentNode = [];
@@ -96,13 +119,14 @@ const Schedule = function () {
         });
 
         const ret = { month, dates };
-
         return ret;
     }
 
     /**
      * Returns an array with month objects
      * @param {*} linesArray agenda as an array of the strings
+     * @returns 
+     * Array of MonthObjects {month, dates} 
      */
     function _getTowerScheduleComplete(linesArray) {
         const items = _getValidLines(linesArray);
@@ -112,12 +136,13 @@ const Schedule = function () {
 
         const months = [];
         let month = _getMonth(items[0]);
-        months.push(_getMonthObject(month, items));
-        month = _getMonth(items[items.length - NUMBER_OF_COLUMNS]);
-        if (months[0].month !== month) {
+        if(month){
             months.push(_getMonthObject(month, items));
+            month = _getMonth(items[items.length - NUMBER_OF_COLUMNS]);
+            if (months[0].month !== month) {
+                months.push(_getMonthObject(month, items));
+            }
         }
-
         return months;
     }
 

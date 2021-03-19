@@ -4,7 +4,7 @@ const Schedule = require('./Schedule');
 const schedule = new Schedule;
 
 test('Empty schedule', () => {
-    const sch = schedule.getTowerSchedule();
+    const sch = schedule.getTowerScheduleComplete();
     expect(sch.length).toBe(0);
 });
 
@@ -20,7 +20,7 @@ test('Schedule without dates', () => {
                 'Canada Lands Company Société Immobilière du Canada',
                 'Canada']
     };
-    const sch = schedule.getTowerSchedule(json.lines);
+    const sch = schedule.getTowerScheduleComplete(json.lines);
     expect(sch.length).toBe(0);
 });
 
@@ -116,9 +116,9 @@ const completeJson =
 };
 
 test('Schedule has 21 days', () => {
-    const sch = schedule.getTowerSchedule(completeJson.lines);
-    console.log(sch)
-    expect(sch.dates.length).toEqual(21);
+    const monthSchedules = schedule.getTowerScheduleComplete(completeJson.lines);
+    expect(monthSchedules[0].dates.length).toEqual(2);
+    expect(monthSchedules[1].dates.length).toEqual(21);
 });
 
 test('One day with two configs', () => {
@@ -142,11 +142,11 @@ test('One day with two configs', () => {
                 'Canada Lands Company Société Immobilière du Canada',
                 'Canada']
     };
-    const sch = schedule.getTowerSchedule(json.lines);
-    expect(sch.dates[0].configs.length).toEqual(2);
+    const sch = schedule.getTowerScheduleComplete(json.lines);
+    expect(sch[0].dates[0].configs.length).toEqual(2);
 });
 
-test('Schedule without a valid date', () => {
+test('Schedule without a valid date should be undefined', () => {
     const json =
     {
         lines:
@@ -164,8 +164,8 @@ test('Schedule without a valid date', () => {
                 'Canada Lands Company Société Immobilière du Canada',
                 'Canada']
     };
-    const sch = schedule.getTowerSchedule(json.lines);
-    expect(sch.length).toBe(0);
+    const sch = schedule.getTowerScheduleComplete(json.lines);
+    expect(sch[0]).toBeUndefined()
 });
 
 test('Multiple colours', () => {
@@ -186,10 +186,9 @@ test('Multiple colours', () => {
                 'Canada Lands Company Société Immobilière du Canada',
                 'Canada']
     };
-    const sch = schedule.getTowerSchedule(json.lines);
-    //console.log(sch.dates[0].configs[0].colours)
-    expect(sch.dates[0].configs[0].colours.length).toEqual(3);
-    expect(sch.dates[1].configs[0].colours.length).toEqual(0);
+    const sch = schedule.getTowerScheduleComplete(json.lines);
+    expect(sch[0].dates[0].configs[0].colours.length).toEqual(3);
+    expect(sch[0].dates[1].configs[0].colours.length).toEqual(0);
 });
 
 test('Long colour description', () => {
@@ -207,8 +206,8 @@ test('Long colour description', () => {
                 'Canada Lands Company Société Immobilière du Canada',
                 'Canada']
     };
-    const sch = schedule.getTowerSchedule(json.lines);
-    expect(sch.dates[0].configs[0].colours.length).toEqual(11);
+    const sch = schedule.getTowerScheduleComplete(json.lines);
+    expect(sch[0].dates[0].configs[0].colours.length).toEqual(11);
 });
 
 test('colours is an object', () => {
@@ -226,8 +225,8 @@ test('colours is an object', () => {
                 'Canada Lands Company Société Immobilière du Canada',
                 'Canada']
     };
-    const sch = schedule.getTowerSchedule(json.lines);
-    expect(sch.dates[0].configs[0].colours.length).toEqual(0);
+    const sch = schedule.getTowerScheduleComplete(json.lines);
+    expect(sch[0].dates[0].configs[0].colours.length).toEqual(0);
 });
 
 test('colours is an object and extract colors from the occasion descrption', () => {
@@ -245,8 +244,8 @@ test('colours is an object and extract colors from the occasion descrption', () 
                 'Canada Lands Company Société Immobilière du Canada',
                 'Canada']
     };
-    const sch = schedule.getTowerSchedule(json.lines);
-    expect(sch.dates[0].configs[0].colours.length > 2).toEqual(true);
+    const sch = schedule.getTowerScheduleComplete(json.lines);
+    expect(sch[0].dates[0].configs[0].colours.length > 2).toEqual(true);
 });
 
 test('getTowerScheduleComplete returns array with months and dates', () => {
@@ -266,7 +265,7 @@ test('getTowerScheduleComplete returns array with months and dates', () => {
                 'July 1',
                 'ALS 1 Awareness Month',
                 'green',
-                'July 2',
+                'July 1',
                 'ALS 2 Awareness Month',
                 'purple',
                 'CN Tower',
@@ -274,8 +273,7 @@ test('getTowerScheduleComplete returns array with months and dates', () => {
                 'Canada']
     };
     let sch = schedule.getTowerScheduleComplete(json.lines);
-    expect(sch.length === 2).toEqual(true);
-    sch = schedule.getTowerScheduleComplete(json.lines.slice(9));
-    expect(sch.length === 1).toEqual(true);
+    expect(sch[0].dates.length === 2).toEqual(true);
+    expect(sch[1].dates.length === 1).toEqual(true);
     
 });
