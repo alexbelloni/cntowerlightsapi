@@ -1,4 +1,4 @@
-[![Heroku CI Status](https://tower-lights.herokuapp.com/last.svg)](https://dashboard.heroku.com/pipelines/bb30db2b-05b2-4704-b66c-9743cfb06309/tests)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)]((https://dashboard.heroku.com/pipelines/bb30db2b-05b2-4704-b66c-9743cfb06309/tests))
 
 <!--![Logo](./public/assets/img/icon-long.png)-->
 
