@@ -100,6 +100,21 @@ Common used status codes:
                      |
 -->
 
+## Build Setup
+
+```bash
+# install dependencies
+npm install
+
+# serve at localhost:5000
+npm start
+
+npm test
+```
+## Deploy
+
+Manual deploy the GitHub branch via Heroku
+
 ## Sources:
 
 > https://www.cntower.ca
