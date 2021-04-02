@@ -6,7 +6,9 @@
   "dependencies": {
     "cors": "^2.8.4",
     "express": "^4.16.3",
-    "scrape-it": "^5.0.5"
+    "scrape-it": "^5.0.5",
+    "swagger-jsdoc": "6.0.0",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
     "jest": "^25.2.7",

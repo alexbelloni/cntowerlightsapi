@@ -12,14 +12,45 @@ router.get('/', (req, res) => {
 });
 
 /**
- * Returns the complete json of the current agenda
+ * @swagger
+ * /scheduleComplete:
+ *  get:
+ *    summary: returns months and dates
+ *    description: Returns the months and date details of the current agenda
+ *    tags: [Months]
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *        content:
+ *           application/json:
+ *             schema:
+ *               type: "object"
+ *               properties:
+ *                 data:
+ *                   type: array
+ *      '500':
+ *        description: A failed response 
  */
 router.get('/scheduleComplete', (req, res) => {
     webScrapingExecute(res, "getTowerScheduleComplete");
 });
 
 /**
- * Returns a array with the colours of the current agenda
+ * @swagger
+ * /scheduleColours:
+ *  get:       
+ *    summary: returns colours
+ *    description: Returns a array with the colours of the current agenda
+ *    tags: [Colours]
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *        content:
+ *           application/json:
+ *             schema:
+ *              type: "string"
+ *      '500':
+ *        description: A failed response
  */
 router.get('/scheduleColours', (req, res) => {
     webScrapingExecute(res, "getLightColours");
