@@ -11,6 +11,7 @@ const swaggerOptions = {
   definition: {
     info: {
       title: "CN Tower Lights API",
+      version: "1.0.0",
       description: "The current CN Tower's color agenda",
       contact: {
         name: "Alexandre Alves",
@@ -25,9 +26,16 @@ const swaggerOptions = {
   },
   "host": "https://tower-lights.herokuapp.com/",
   "basePath": "/",
-
-  
-  apis: ["./routes/api.js"]
+  schemes:[
+    "https"
+  ],  
+  apis: ["./routes/api.js"],
+  "swagger": "2.0",
+  "paths": { },
+  "definitions": { },
+  "responses": { },
+  "parameters": { },
+  "securityDefinitions": { }
 }
 
 const swaggerDoc = swaggerJsDoc(swaggerOptions);

@@ -13,21 +13,58 @@ router.get('/', (req, res) => {
 
 /**
  * @swagger
+ * definitions:
+*   Config:
+ *     properties:
+ *       occasions:
+ *         type: string
+ *       colourCaption:
+ *         type: string 
+ *       colours: 
+ *         type: "array"
+ *         items:
+ *           type: "string"
+ *   Date:
+ *     properties:
+ *       day:
+ *         type: integer
+ *       configs:
+ *         type: "array"
+ *         items:
+ *           $ref: '#/definitions/Config'
+ *   Month:
+ *     properties:
+ *       month:
+ *         type: string
+ *       dates:
+ *         type: "array"
+ *         items:
+ *           $ref: '#/definitions/Date'
+ *   Agenda:
+ *      type: "array"
+ *      items:
+ *        $ref: '#/definitions/Month'
+ *   Colours:
+ *      type: "array"
+ *      items:
+ *        type: "string"
+ */
+
+/**
+ * @swagger
  * /scheduleComplete:
  *  get:
  *    summary: returns months and dates
  *    description: Returns the months and date details of the current agenda
- *    tags: [Months]
+ *    produces:
+ *       - application/json 
+ *    tags: 
+ *      - Agenda 
  *    responses:
  *      '200':
- *        description: A successful response
- *        content:
- *           application/json:
- *             schema:
- *               type: "object"
- *               properties:
- *                 data:
- *                   type: array
+ *        description: As a successful response of Agenda
+ *        schema:
+ *           $ref: '#/definitions/Agenda'
  *      '500':
  *        description: A failed response 
  */
@@ -41,7 +78,8 @@ router.get('/scheduleComplete', (req, res) => {
  *  get:       
  *    summary: returns colours
  *    description: Returns a array with the colours of the current agenda
- *    tags: [Colours]
+ *    tags: 
+ *      - Colours
  *    responses:
  *      '200':
  *        description: A successful response
