@@ -2,7 +2,7 @@
 
 <!--![Logo](./public/assets/img/icon-long.png)-->
 
-# Welcome to CN Tower Lights API - An open API
+# Welcome to CN Tower Lights API
 
 This API shows the current CN Tower's color agenda according to the official webpage.  
   
@@ -43,8 +43,6 @@ Manual deploy the GitHub branch via Heroku
 > https://www.cntower.ca
 
 # Contributors ✨
-
-Thanks goes to these wonderful people
 
 <table>
   <tr>
