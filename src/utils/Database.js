@@ -1,17 +1,17 @@
 
 const Airtable = require('airtable');
-const base = new Airtable({ apiKey: 'keyyivMcgnia52h0U' }).base('appvTKHuVkHKALTDT');
+const base = new Airtable({ apiKey: process.env.AIRTABLE_APIKEY }).base(process.env.AIRTABLE_BASE);
 
 const Database = () => {
 
-    function get(monthName, fnc) {
-        base('agenda').select({
+    function get(key, fnc) {
+        base(process.env.AIRTABLE_TABLE).select({
             // Selecting the first 3 records in Grid view:
             //maxRecords: 3,
             view: "Grid view"
         }).eachPage(function page(records, fetchNextPage) {
             // This function (`page`) will get called for each page of records.
-            const record = records.find(r => r.get('month') === monthName);
+            const record = records.find(r => r.get('key') === key);
             if (record) {
                 fnc(record.get('json'));
             } else {
@@ -33,11 +33,11 @@ const Database = () => {
         });
     }
 
-    function save(monthName, json){
+    function save(key, json){
         base('agenda').create([
             {
               "fields": {
-                "month": monthName,
+                "key": key,
                 "json": json
               }
             },

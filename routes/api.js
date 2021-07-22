@@ -103,18 +103,19 @@ router.get('/scheduleColours', (req, res) => {
 function webScrapingExecute(res, scheduleMethodname) {
     res.setHeader('Content-Type', 'application/json');
 
-    const currentMonth = (new Date().getMonth() + 1).toString();
+    const today = new Date();
+    const key = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`
 
-    Database.get(currentMonth, json => {
+    Database.get(key, json => {
         if (json) {
-            //console.log(`${currentMonth} found`);
+            //console.log(`${key} found`);
             res.statusCode = 200;
             res.send(json);
         } else {
-            //console.log(`${currentMonth} not found`);
+            //console.log(`${key} not found`);
             WebScraping.execute(scheduleMethodname).then(lines => {
                 const sch = (new Schedule)[scheduleMethodname](lines);
-                Database.save(currentMonth, JSON.stringify(sch))
+                Database.save(key, JSON.stringify(sch))
                 res.statusCode = 200;
                 res.send(sch);
             }).catch(err => {
