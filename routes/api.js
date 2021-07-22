@@ -3,6 +3,7 @@ const router = express.Router();
 
 const WebScraping = require('./WebScraping');
 const Schedule = require('../src/entities/Schedule');
+const Database = require('../src/utils/Database');
 
 /**
  * Shows API live message
@@ -102,14 +103,26 @@ router.get('/scheduleColours', (req, res) => {
 function webScrapingExecute(res, scheduleMethodname) {
     res.setHeader('Content-Type', 'application/json');
 
-    WebScraping.execute(scheduleMethodname).then(lines => {
-        const sch = (new Schedule)[scheduleMethodname](lines)
-        res.statusCode = 200;
-        res.send(sch);
-    }).catch(err => {
-        res.statusCode = 500;
-        res.send(err);
-    });
+    const currentMonth = (new Date().getMonth() + 1).toString();
+
+    Database.get(currentMonth, json => {
+        if (json) {
+            //console.log(`${currentMonth} found`);
+            res.statusCode = 200;
+            res.send(json);
+        } else {
+            //console.log(`${currentMonth} not found`);
+            WebScraping.execute(scheduleMethodname).then(lines => {
+                const sch = (new Schedule)[scheduleMethodname](lines);
+                Database.save(currentMonth, JSON.stringify(sch))
+                res.statusCode = 200;
+                res.send(sch);
+            }).catch(err => {
+                res.statusCode = 500;
+                res.send(err);
+            });
+        }
+    })
 }
 
 module.exports = router;

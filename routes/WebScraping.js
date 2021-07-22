@@ -1,14 +1,12 @@
 const scrapeIt = require("scrape-it")
 
 const WebScraping = () => {
-    const CNTOWER_AGENDA_URL = "http://www.cntower.ca/en-ca/about-us/night-lighting.html";
-
     /**
      * Return a promise that when resolved it response the lines of the agenda or rejected with an error.
      */
     function execute() {
         return new Promise((resolve, reject)=>{
-            scrapeIt(CNTOWER_AGENDA_URL, {
+            scrapeIt(process.env.AGENDA_URL, {
                 lines: {
                     listItem: "td"
                 }
