@@ -103,29 +103,42 @@ router.get('/scheduleColours', (req, res) => {
 function webScrapingExecute(res, scheduleMethodname) {
     res.setHeader('Content-Type', 'application/json');
 
-    //key from today
-    const key = Database.getKeyFromDate();
-
-    Database.get(key, json => {
-        if (json) {
-            //console.log(`${key} found`);
+    if (scheduleMethodname === "getLightColours") {
+        WebScraping.execute(scheduleMethodname).then(lines => {
+            const sch = (new Schedule)[scheduleMethodname](lines);
             res.statusCode = 200;
-            res.send(json);
-        } else {
-            //console.log(`${key} not found`);
-            WebScraping.execute(scheduleMethodname).then(lines => {
-                (new Schedule)[scheduleMethodname](lines).then(sch=>{
-                Database.save(key, JSON.stringify(sch))
-                res.statusCode = 200;
-                res.send(sch);
-                })
+            res.send(sch);
+        }).catch(err => {
+            res.statusCode = 500;
+            res.send(err);
+        });
+    } else {
+        //key from today
+        const key = Database.getKeyFromDate();
 
-            }).catch(err => {
-                res.statusCode = 500;
-                res.send(err);
-            });
-        }
-    })
+        Database.get(key, json => {
+            if (json) {
+                //console.log(`${key} found`);
+                res.statusCode = 200;
+                res.send(json);
+            } else {
+                //console.log(`${key} not found`);
+                WebScraping.execute(scheduleMethodname).then(lines => {
+                    (new Schedule)[scheduleMethodname](lines).then(sch => {
+                        Database.save(key, JSON.stringify(sch))
+                        res.statusCode = 200;
+                        res.send(sch);
+                    })
+
+                }).catch(err => {
+                    res.statusCode = 500;
+                    res.send(err);
+                });
+            }
+        })
+    }
+
+
 }
 
 module.exports = router;
