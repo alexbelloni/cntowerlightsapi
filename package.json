@@ -13,12 +13,13 @@
     "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
-    "jest": "^25.2.7",
+    "cross-env": "^7.0.3",
+    "jest": "^27.1.0",
     "minimist": "^1.2.5",
     "nodemon": "^2.0.4"
   },
   "scripts": {
-    "test": "jest",
+    "test": "cross-env NODE_ENV=development jest",
     "start": "node app.js",
     "dev": "nodemon app.js",
     "preinstall-": "npx npm-force-resolutions"

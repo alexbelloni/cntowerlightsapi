@@ -4,7 +4,29 @@ const base = new Airtable({ apiKey: process.env.AIRTABLE_APIKEY }).base(process.
 
 const Database = () => {
 
-    function get(key, fnc) {
+    function getKeyFromDate(date = new Date()) {
+        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+    }
+
+    function getLastRecord() {
+        return new Promise((resolve, reject)=>{
+            base(process.env.AIRTABLE_TABLE).select({
+                // Selecting the first 3 records in Grid view:
+                maxRecords: 1,
+                view: "Grid view",
+                sort: [{ field: "key", direction: "desc" }],
+            }).eachPage(function page(records, fetchNextPage) {
+                resolve(records.length > 0 ? records[0].get('json') : []);
+            }, function done(err) {
+                if (err) {
+                    console.error(err);
+                    reject();
+                }
+            });
+        })
+    }
+
+    function get(key, callback) {
         base(process.env.AIRTABLE_TABLE).select({
             // Selecting the first 3 records in Grid view:
             //maxRecords: 3,
@@ -13,9 +35,9 @@ const Database = () => {
             // This function (`page`) will get called for each page of records.
             const record = records.find(r => r.get('key') === key);
             if (record) {
-                fnc(record.get('json'));
+                callback(record.get('json'));
             } else {
-                fnc();
+                callback();
             }
 
             //setCourses(items.sort((a, b) => a.order < b.order));
@@ -27,31 +49,33 @@ const Database = () => {
         }, function done(err) {
             if (err) {
                 console.error(err);
-                fnc();
+                callback();
                 return;
             }
         });
     }
 
-    function save(key, json){
+    function save(key, json) {
         base('agenda').create([
             {
-              "fields": {
-                "key": key,
-                "json": json
-              }
+                "fields": {
+                    "key": key,
+                    "json": json
+                }
             },
-          ], function(err, records) {
+        ], function (err, records) {
             if (err) {
-              console.error(err);
-              return;
+                console.error(err);
+                return;
             }
-          });
+        });
     }
 
     return {
         get,
         save,
+        getKeyFromDate,
+        getLastRecord,
     }
 }
 

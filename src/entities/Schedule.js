@@ -39,7 +39,7 @@ const Schedule = function () {
                 }
             });
             return arrCopy
-        } catch{
+        } catch {
             return []
         }
     }
@@ -67,12 +67,23 @@ const Schedule = function () {
 
     /**
      * @param {string|Array} arr 
-     * Each columns of the table 
+     * The whole spreadsheet as an array of strings 
+     * [ 
+     *  "Date",
+     *  "Occasion* (Subject to Change)",
+     *  "Colour",
+     *  ... valid lines ...
+     *  "CN Tower",
+     *  "Canada Lands Company Société Immobilière du Canada",
+     *  "Canada" 
+     * ]
      * @returns {string|Array}
      * Valid columns
      */
     function _getValidLines(arr) {
-        return arr && arr.slice(NUMBER_OF_COLUMNS, arr.length - NUMBER_OF_COLUMNS)
+        const startValidLines = NUMBER_OF_COLUMNS;
+        const endValidLines = arr.length - NUMBER_OF_COLUMNS;
+        return arr && arr.slice(startValidLines, endValidLines);
     }
 
     /**
@@ -124,23 +135,42 @@ const Schedule = function () {
 
     /**
      * Returns an array with month objects
-     * @param {*} linesArray agenda as an array of the strings
+     * @param {*} linesArray agenda as an array of strings
      * @returns 
      * Array of MonthObjects {month, dates} 
      */
-    function _getTowerScheduleComplete(linesArray) {
-        const items = _getValidLines(linesArray);
-        if (!items || items.length < NUMBER_OF_COLUMNS) {
+    async function _getTowerScheduleComplete(linesArray) {
+        const lines = _getValidLines(linesArray);
+        if (!lines || lines.length < NUMBER_OF_COLUMNS) {
             return [];
         }
 
         const months = [];
-        let month = _getMonth(items[0]);
-        if(month){
-            months.push(_getMonthObject(month, items));
-            month = _getMonth(items[items.length - NUMBER_OF_COLUMNS]);
+        let month = _getMonth(lines[0]);
+        if (month) {
+            const monthObj = _getMonthObject(month, lines);
+
+            //try to get the last JSON agenda from database
+            try{
+                const Database = require('../utils/Database');
+                const lastAgenda = await Database.getLastRecord();
+                const aa = JSON.parse(lastAgenda)
+                const dates = aa.find(a => a.month === month);
+                const datesnew = dates.dates.reduce((acc, cur) => {
+                    return acc.some(m => m.day === cur.day) ? acc : [...acc, cur]
+                }, monthObj.dates).sort((a,b)=>{
+                    return a.day < b.day ? -1 : (a.day > b.day ? 1 : 0)
+                })            
+                monthObj.dates = datesnew;
+            } catch(e){}
+
+
+            months.push(monthObj);
+            //Verify if agenda has one more distinct month (agenda can have one or two months)
+            const lastValidLineIndex = lines.length - NUMBER_OF_COLUMNS;
+            month = _getMonth(lines[lastValidLineIndex]);
             if (months[0].month !== month) {
-                months.push(_getMonthObject(month, items));
+                months.push(_getMonthObject(month, lines));
             }
         }
         return months;
@@ -162,7 +192,7 @@ const Schedule = function () {
             const newNode = ((index + 1) % NUMBER_OF_COLUMNS) === 0;
             if (newNode) {
                 const config = _getConfig(currentNode);
-                colours = [...colours, ...config.colours];                
+                colours = [...colours, ...config.colours];
                 currentNode = [];
             }
         })

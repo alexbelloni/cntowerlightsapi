@@ -4,11 +4,20 @@
 
 # Welcome to CN Tower Lights API
 
-This API shows the current CN Tower's color agenda according to the official webpage.  
+This API shows the current CN Tower's color agenda (📍 Toronto, Canada) according to its official webpage.  
   
+## Motivation
+I wondered what the reasons were to CN Tower shows distinct colors every night. Then I found the official agenda and its appointments to celebrate notable events and dates. As a nerd web developer, I created this API when didn't discover the official one.  
+
+## How it works
+
+After user calls the API requesting the schedule:  
+If the current date is on the database, it returns the agenda  
+If else, it scrapes the official schedule and saves on the database. Then the method returns the agenda to the user. 
+
 ## Documentation
 
-Created using: Nodejs, Express, Scrape-it   
+Created using: Nodejs, Express, Scrape-it, Airtable   
   
 Tested using: Jest  
 

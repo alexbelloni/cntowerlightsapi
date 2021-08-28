@@ -9,7 +9,7 @@ const Database = require('../src/utils/Database');
  * Shows API live message
  */
 router.get('/', (req, res) => {
-    res.send('CNTower Lights API\n');
+    res.send('Hello, I am the CNTower Lights API by Alex\n');
 });
 
 /**
@@ -103,8 +103,8 @@ router.get('/scheduleColours', (req, res) => {
 function webScrapingExecute(res, scheduleMethodname) {
     res.setHeader('Content-Type', 'application/json');
 
-    const today = new Date();
-    const key = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`
+    //key from today
+    const key = Database.getKeyFromDate();
 
     Database.get(key, json => {
         if (json) {
@@ -114,10 +114,12 @@ function webScrapingExecute(res, scheduleMethodname) {
         } else {
             //console.log(`${key} not found`);
             WebScraping.execute(scheduleMethodname).then(lines => {
-                const sch = (new Schedule)[scheduleMethodname](lines);
+                (new Schedule)[scheduleMethodname](lines).then(sch=>{
                 Database.save(key, JSON.stringify(sch))
                 res.statusCode = 200;
                 res.send(sch);
+                })
+
             }).catch(err => {
                 res.statusCode = 500;
                 res.send(err);
